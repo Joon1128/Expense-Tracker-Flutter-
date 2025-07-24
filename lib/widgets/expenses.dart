@@ -1,4 +1,5 @@
 import 'package:app3/widgets/expenses_list/expenses_list.dart';
+import 'package:app3/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:app3/models/expense.dart';
 
@@ -31,9 +32,26 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  void _openAddExpenseOverlay() {
+    // builder --> 기본으로 호출하는 함수를 제공해야한다.
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => const NewExpense(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter ExpenseTracker '),
+        actions: [
+          IconButton(
+            onPressed: _openAddExpenseOverlay,
+            icon: Icon(Icons.add),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Text('The chart'),
