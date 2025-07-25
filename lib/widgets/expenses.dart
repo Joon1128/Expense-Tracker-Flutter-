@@ -35,6 +35,8 @@ class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
     // builder --> 기본으로 호출하는 함수를 제공해야한다.
     showModalBottomSheet(
+      isScrollControlled:
+          true, // 전체화면까지 시트 높이 확장.  false의 경우 5-60%
       context: context,
       // isScrollControlled: true, // 키보드 충돌 방지
       builder: (ctx) =>
@@ -48,8 +50,47 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
+  void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(
+      expense,
+    );
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+    ScaffoldMessenger.of(
+      context,
+    ).clearSnackBars(); // 기존에 떠있던 SnackBar제거
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 3),
+        content: const Text('Expense deleted.'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(
+                expenseIndex,
+                expense,
+              );
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = Center(
+      child: Text('No expenses found. Start adding some!'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter ExpenseTracker '),
@@ -63,11 +104,7 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           Text('The chart'),
-          Expanded(
-            child: ExpensesList(
-              expenses: _registeredExpenses,
-            ),
-          ),
+          Expanded(child: mainContent),
         ],
       ),
     );
