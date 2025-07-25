@@ -37,8 +37,15 @@ class _ExpensesState extends State<Expenses> {
     showModalBottomSheet(
       context: context,
       // isScrollControlled: true, // 키보드 충돌 방지
-      builder: (ctx) => const NewExpense(),
+      builder: (ctx) =>
+          NewExpense(onAddExpense: _addExpense),
     );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
   }
 
   @override

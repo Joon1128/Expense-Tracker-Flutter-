@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:app3/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
 
   @override
   State<NewExpense> createState() {
@@ -28,6 +30,7 @@ class _NewExpenseState extends State<NewExpense> {
     );
     //사용자가 날짜를 선택하면 DateTime객체 반환, 취소하면 null반환
     final pickedDate = await showDatePicker(
+      //日付選択用モーダルカレンダー
       //날짜 선택 UI
       context: context,
       initialDate: now,
@@ -51,8 +54,34 @@ class _NewExpenseState extends State<NewExpense> {
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
         _selectedDate == null) {
-      //show error message
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Invalid input'),
+          content: Text(
+            'Please make sure a valid title, amount, date and category was entered.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+      return;
     }
+
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
   }
 
   @override
