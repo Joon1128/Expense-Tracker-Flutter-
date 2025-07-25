@@ -36,6 +36,7 @@ class _ExpensesState extends State<Expenses> {
     // builder --> 기본으로 호출하는 함수를 제공해야한다.
     showModalBottomSheet(
       context: context,
+      // isScrollControlled: true, // 키보드 충돌 방지
       builder: (ctx) => const NewExpense(),
     );
   }
