@@ -15,8 +15,15 @@ class ExpenseItem extends StatelessWidget {
           vertical: 16,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(expense.title),
+            Text(
+              expense.title,
+              // Theme.of(context) --> 앱 전체에 설정된 ThemeData를 가져온다.
+              // .textTheme --->그 중에서 글꼴 스타일 묶음인 TextTheme에 접근한다.
+              // .titleLarge ---> 그 TextTheme안에 미리 정의된 스타일 중 하나
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(height: 4),
             Row(
               children: [
