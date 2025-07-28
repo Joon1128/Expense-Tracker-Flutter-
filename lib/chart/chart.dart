@@ -48,10 +48,10 @@ class Chart extends StatelessWidget {
           colors: [
             Theme.of(
               context,
-            ).colorScheme.primary.withOpacity(0.3),
+            ).colorScheme.primary.withAlpha(77),
             Theme.of(
               context,
-            ).colorScheme.primary.withOpacity(0.0),
+            ).colorScheme.primary.withAlpha(0),
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -92,7 +92,7 @@ class Chart extends StatelessWidget {
                             : Theme.of(context)
                                   .colorScheme
                                   .primary
-                                  .withOpacity(0.7),
+                                  .withAlpha(179),
                       ),
                     ),
                   ),
