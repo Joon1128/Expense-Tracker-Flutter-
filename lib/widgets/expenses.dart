@@ -36,6 +36,8 @@ class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
     // builder --> 기본으로 호출하는 함수를 제공해야한다.
     showModalBottomSheet(
+      useSafeArea:
+          true, //  기기 화면의 안전영역을 자동으로 고려 --> 자동으로 padding을 넣어준다
       isScrollControlled:
           true, // 전체화면까지 시트 높이 확장.  false의 경우 5-60%
       context: context,
@@ -83,8 +85,6 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
 
     Widget mainContent = Center(
       child: Text('No expenses found. Start adding some!'),
@@ -97,6 +97,7 @@ class _ExpensesState extends State<Expenses> {
       );
     }
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Flutter ExpenseTracker '),
         actions: [

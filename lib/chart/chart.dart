@@ -91,7 +91,7 @@ class Chart extends StatelessWidget {
                               ).colorScheme.secondary
                             : Theme.of(context)
                                   .colorScheme
-                                  .primary
+                                  .primary // light mode
                                   .withAlpha(179),
                       ),
                     ),

@@ -44,15 +44,18 @@ class Expense {
 
 class ExpenseBucket {
   const ExpenseBucket({
+    //  외부에서 category와 expenses를 받아서 ExpensesBucket객체를 생성
     required this.category,
     required this.expenses,
   });
 
   //대체 생성자 함수 정의
   ExpenseBucket.forCategory(
+    // 모든 Expense 리스트 중에서 해당 카테고리에 해당하는 것만 골라서 expenses로 자동 필터링
     List<Expense> allExpenses,
     this.category,
-  ) : expenses = allExpenses
+  ) : expenses = //  :   --> Initializer
+      allExpenses
           .where((expense) => expense.category == category)
           .toList();
 
