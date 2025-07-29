@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app3/models/expense.dart';
+import 'package:flutter/cupertino.dart'; // ios styling  & designing
+import 'dart:io';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key, required this.onAddExpense});
@@ -42,18 +44,26 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  void _submitExpenseData() {
-    final enteredAmount = double.tryParse(
-      // tryParse('Hello') => null
-      // tryParse('1.12) => 1.12
-      //returns null for invalid inputs
-      _amountController.text,
-    );
-    final amountIsInvalid =
-        enteredAmount == null || enteredAmount <= 0;
-    if (_titleController.text.trim().isEmpty ||
-        amountIsInvalid ||
-        _selectedDate == null) {
+  void _showDialog() {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: Text('Invalid input'),
+          content: Text(
+            'Please make sure a valid title, amount, date and category was entered.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+    } else {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -71,13 +81,30 @@ class _NewExpenseState extends State<NewExpense> {
           ],
         ),
       );
-      return;
+    }
+
+    return;
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(
+      // tryParse('Hello') => null
+      // tryParse('1.12) => 1.12
+      //returns null for invalid inputs
+      _amountController.text,
+    );
+    final amountIsInvalid =
+        enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+      _showDialog();
     }
 
     widget.onAddExpense(
       Expense(
         title: _titleController.text,
-        amount: enteredAmount,
+        amount: enteredAmount!,
         date: _selectedDate!,
         category: _selectedCategory,
       ),
